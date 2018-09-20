@@ -44,7 +44,7 @@ public class DivisibleMethodCollectionTest {
     }
 
     @Test
-    public void getDivisibleListByAddListBeginOutOfEnd(){
+    public void getDivisibleListByAddListBeginOutOfEnd() throws InterruptedException,ExecutionException{
         List<String> testList = DivisibleMethodCollection.getDivisibleListByAddList(8,6);
         assertEquals(0, testList.size());
 
@@ -52,7 +52,7 @@ public class DivisibleMethodCollectionTest {
 
 
     @Test
-    public void getDivisibleListByMultiThreadOnRightCase()    throws ExecutionException, InterruptedException{
+    public void getDivisibleListByMultiThreadOnRightCase() throws InterruptedException,ExecutionException{
         List<String> testList =  DivisibleMethodCollection.getDivisibleListByMultiThread(1,100,3);
         assertEquals(100,testList.size());
         int size = testList.size();
@@ -71,7 +71,7 @@ public class DivisibleMethodCollectionTest {
     }
 
     @Test
-    public void getDivisibleListByMultiThreadOnSameParameter()   throws ExecutionException, InterruptedException{
+    public void getDivisibleListByMultiThreadOnSameParameter() throws InterruptedException,ExecutionException{
         List<String> testList = DivisibleMethodCollection.getDivisibleListByMultiThread(6,6,3);
         assertEquals(1,testList.size());
         assertEquals("Fizz",testList.get(0));
@@ -86,10 +86,11 @@ public class DivisibleMethodCollectionTest {
     }
 
     @Test
-    public void getDivisibleListByMultiThreadBeginOutOfEnd()   throws ExecutionException, InterruptedException{
+    public void getDivisibleListByMultiThreadBeginOutOfEnd() throws InterruptedException,ExecutionException{
         List<String> testList = DivisibleMethodCollection.getDivisibleListByMultiThread(8,6,3);
         assertEquals(0, testList.size());
 
     }
+
 
 }

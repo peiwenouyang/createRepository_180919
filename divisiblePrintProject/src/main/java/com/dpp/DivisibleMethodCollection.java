@@ -1,7 +1,8 @@
 package com.dpp;
 
+import com.dpp.com.help.RedisSetOperation;
+
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -49,7 +50,7 @@ public class DivisibleMethodCollection {
     }
     /*use multiple Thread to solve the problem, may not effective in low level data scale*/
     public static List<String> getDivisibleListByMultiThread(int numberBegin, int numberEnd, int missionNumber)
-            throws ExecutionException, InterruptedException{
+    throws InterruptedException,ExecutionException{
         ExecutorService execPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         int totalNumber = numberEnd - numberBegin+1;
         int singleListLength = totalNumber/missionNumber-1;
@@ -64,13 +65,13 @@ public class DivisibleMethodCollection {
         {
             return getDivisibleListByAddList(numberBegin,numberEnd);
         }
+            while (taskEnd <= totalNumber - remainListLength + 1) {
+                Future<List<String>> list = execPool.submit(new DivisibleCallable(taskBegin, taskEnd));
+                futureList.addAll(list.get());
+                taskBegin = taskEnd + 1;
+                taskEnd = taskBegin + singleListLength;
+            }
 
-        while (taskEnd <= totalNumber - remainListLength+1) {
-            Future<List<String>> list = execPool.submit(new DivisibleCallable(taskBegin, taskEnd));
-            futureList.addAll(list.get());
-            taskBegin = taskEnd + 1;
-            taskEnd = taskBegin + singleListLength;
-        }
 
         if(taskBegin < totalNumber){
             futureList.addAll( getDivisibleListByAddList(taskBegin, taskBegin+remainListLength));
@@ -80,6 +81,59 @@ public class DivisibleMethodCollection {
         }
         execPool.shutdown();
         return futureList;
+    }
+    /*
+    *this method just for test of redis's usage, and try a new idea of solution
+    * it turns out if can not make sure the first value is very hard to enhance performance
+    * so the test case won't have because is very hard to find a good condition for this solution
+     */
+    public static List<String> getDivisibleListWithDataSavedByRedis(int numberBegin, int numberEnd){
+        if(numberBegin > numberEnd){
+            return  new ArrayList<String>();
+        }
+        RedisSetOperation redis = RedisSetOperation.getRso();
+        redis.setList(numberBegin,numberEnd);
+        List<String> list = redis.getList();
+        int i = numberBegin;
+
+
+        do{
+
+            if(i%3 == 0 && i%5 != 0){
+                list.set(i-1, "Fizz");
+                i += 3;
+            }else
+            {
+                i++;
+            }
+
+        }while (i <= numberEnd);
+        i = numberBegin;
+       do{
+            if(i%5 == 0 && i%3!= 0){
+                list.set(i-1, "Buzz");
+                i += 5;
+            }else
+            {
+                i++;
+            }
+
+        }while (i <= numberEnd);
+        i = numberBegin;
+       do{
+            if(i%5 == 0&& i%3 == 0){
+                list.set(i-1, "FizzBuzz");
+                i += 15;
+            }else
+            {
+                i++;
+            }
+
+        }while (i <= numberEnd);
+
+
+
+        return list;
     }
 }
 

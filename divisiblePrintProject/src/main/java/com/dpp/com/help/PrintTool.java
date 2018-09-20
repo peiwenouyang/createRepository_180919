@@ -1,4 +1,6 @@
-package com.dpp;
+package com.dpp.com.help;
+
+import redis.clients.jedis.Jedis;
 
 import java.util.List;
 /*
@@ -17,4 +19,8 @@ public class PrintTool {
         List<String> remainSubList = list.subList(listFrom,list.size());// if the rest of the is shorter than seperateLength
         System.out.println(remainSubList);
     }
+    public static void saveDataToRedis(int numberBegin, int numberEnd){
+
+    }
+
 }
