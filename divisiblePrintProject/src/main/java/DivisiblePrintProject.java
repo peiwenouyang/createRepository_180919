@@ -17,11 +17,13 @@ public class DivisiblePrintProject {
         }catch (ExecutionException e){
               e.printStackTrace();
         }
-        System.out.println("------------------------");
+      /*  System.out.println("------------------------");
         List<String> list3 =  DivisibleMethodCollection.getDivisibleListWithDataSavedByRedis(1,100);
-        PrintTool.seperateAndPrintList(list3,20);
+        PrintTool.seperateAndPrintList(list3,20);*/
 
-
+        System.out.println("------------------------");
+        List<String> list4 =  DivisibleMethodCollection.getDivisibleLIstByResponsibilityOfChain(1,100);
+        PrintTool.seperateAndPrintList(list4,20);
     }
 
 }

@@ -1,6 +1,9 @@
 package com.dpp;
 
-import com.dpp.com.help.RedisSetOperation;
+import com.dpp.com.help.crp.DivisibleByFifteen;
+import com.dpp.com.help.crp.DivisibleByFive;
+import com.dpp.com.help.crp.DivisibleByThree;
+import com.dpp.com.help.redis.RedisSetOperation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,6 +138,24 @@ public class DivisibleMethodCollection {
 
         return list;
     }
+
+    public static List<String> getDivisibleLIstByResponsibilityOfChain(int numberBegin, int numberEnd){
+        if(numberBegin > numberEnd) {
+            return new ArrayList<String>();
+        }
+        DivisibleByThree dt = new DivisibleByThree();
+        DivisibleByFive df = new DivisibleByFive();
+        DivisibleByFifteen dff = new DivisibleByFifteen();
+        dt.setSuccessor(df);
+        df.setSuccessor(dff);
+        List<String> list = new ArrayList<String>();
+        for (int i = numberBegin; i <= numberEnd; i++ ){
+             String show = dt.handleRequest(i);
+             list.add(show);
+        }
+        return list;
+    }
+
 }
 
 

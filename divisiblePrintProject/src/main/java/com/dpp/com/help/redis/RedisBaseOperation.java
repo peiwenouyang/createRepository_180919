@@ -1,4 +1,4 @@
-package com.dpp.com.help;
+package com.dpp.com.help.redis;
 
 import redis.clients.jedis.*;
 
